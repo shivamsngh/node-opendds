@@ -41,6 +41,8 @@
                    'src/NodeQosConversion.cpp' ],
       'include_dirs': [ "<!(node -e \"require('nan')\")",
                       '$(ACE_ROOT)', '$(TAO_ROOT)', '$(DDS_ROOT)' ],
+      'cflags!': [ '-fno-exceptions' ],
+      'cflags_cc!': [ '-fno-exceptions' ],                
       'conditions': [
         ['OS=="linux"', {
           'link_settings': {
@@ -49,6 +51,17 @@
             'ldflags': [ '-L$(ACE_ROOT)/lib', '-L$(DDS_ROOT)/lib' ],
           },
         }],
+        [ "OS==\"mac\"", {
+            "xcode_settings": {
+              "OTHER_CFLAGS": [
+                "-mmacosx-version-min=10.7",
+                "-std=c++11",
+                "-stdlib=libc++"
+              ],
+              "GCC_ENABLE_CPP_RTTI": "YES",
+              "GCC_ENABLE_CPP_EXCEPTIONS": "YES"
+            }
+          }],
         ['OS=="win"', {
           'msvs_settings' : {
             'VCLinkerTool': {
